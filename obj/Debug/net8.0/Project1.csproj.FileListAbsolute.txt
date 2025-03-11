@@ -38,3 +38,4 @@
 /home/zavali/repos/az204/Project1/bin/Debug/net8.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /home/zavali/repos/az204/Project1/obj/Debug/net8.0/Project1.csproj.AssemblyReference.cache
 /home/zavali/repos/az204/Project1/obj/Debug/net8.0/Project1.csproj.Up2Date
+/home/zavali/repos/az204/Project1/obj/Debug/net8.0/Project1.sourcelink.json
