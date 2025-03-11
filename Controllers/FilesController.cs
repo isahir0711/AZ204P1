@@ -27,5 +27,10 @@ namespace MyApp.Namespace
 
             return Ok();
         }
+
+        //Azure Functions
+        //Deploy a Azure App Service
+
+        //Load iamges into the api
     }
 }
