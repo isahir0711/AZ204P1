@@ -1,14 +1,17 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project1.DTOs;
 using Project1.services;
 
-namespace MyApp.Namespace
+namespace Project1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class FilesController : ControllerBase
     {
         private readonly FileStorage _fileStorageService;
+        private const string containerName = "demoimages";
 
         public FilesController(FileStorage fileStorage)
         {
@@ -16,27 +19,50 @@ namespace MyApp.Namespace
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<List<string>>> Get()
         {
-            return Ok("Todo bien!");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Post()
-        {
-            string containerName = "demoimages";
-            string localFilePath = "images/tuki.png";
             var blobServiceClient = _fileStorageService.GetBlobServiceClient();
             var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
 
-            await _fileStorageService.UploadFileAsync(localFilePath, containerClient);
+            var listres = await _fileStorageService.ListBlobs(containerClient);
 
+            return Ok(listres);
+        }
+
+        [HttpGet]
+        [Route("{blobName}")]
+        public async Task<ActionResult> Get(string blobName)
+        {
+            var blobServiceClient = _fileStorageService.GetBlobServiceClient();
+            var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
+
+            await _fileStorageService.DownloadBlob(blobName, containerClient);
+            Console.WriteLine("downloaded");
             return Ok();
         }
 
-        //Azure Functions
-        //Deploy a Azure App Service
+        [HttpDelete]
+        [Route("{blobName}")]
+        public async Task<ActionResult> Delete(string blobName)
+        {
 
-        //Load iamges into the api
+            var blobServiceClient = _fileStorageService.GetBlobServiceClient();
+            var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
+
+            await _fileStorageService.DeleteBlob(blobName, containerClient);
+            Console.WriteLine("Deleted");
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(UploadFileDTO uploadFileDTO)
+        {
+            var blobServiceClient = _fileStorageService.GetBlobServiceClient();
+            var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
+
+            await _fileStorageService.UploadFileAsync(uploadFileDTO.File, containerClient);
+
+            return Ok();
+        }
     }
 }
