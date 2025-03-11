@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Project1.DTOs;
 using Project1.services;
@@ -26,12 +27,13 @@ namespace Project1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<string>>> Get()
         {
-            var blobServiceClient = _fileStorageService.GetBlobServiceClient();
-            var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
+            //     var blobServiceClient = _fileStorageService.GetBlobServiceClient();
+            //     var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
 
-            var listres = await _fileStorageService.ListBlobs(containerClient);
+            //     var listres = await _fileStorageService.ListBlobs(containerClient);
 
-            return Ok(listres);
+            //     return Ok(listres);
+            return Ok("Demo");
         }
 
         [HttpGet]
