@@ -16,7 +16,13 @@ namespace MyApp.Namespace
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
+        {
+            return Ok("Todo bien!");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post()
         {
             string containerName = "demoimages";
             string localFilePath = "images/tuki.png";
