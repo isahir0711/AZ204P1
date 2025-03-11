@@ -6,6 +6,11 @@ using Project1.services;
 
 namespace Project1.Controllers
 {
+    //Result Pattern
+    //Validations, upload only images/types (png,jpg,webp,etc), Size Validation
+    //Connection String Env variable
+    //Azure Functions, create thumbnails(Blob trigger), delete blobs after 2 days of creation
+
     [Route("api/[controller]")]
     [ApiController]
     public class FilesController : ControllerBase
