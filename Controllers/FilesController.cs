@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Project1.DTOs;
+using Project1.Enums;
 using Project1.services;
 
 namespace Project1.Controllers
 {
-    //Result Pattern
     //Validations, upload only images/types (png,jpg,webp,etc), Size Validation
-    //Connection String Env variable
-    //Azure Functions, create thumbnails(Blob trigger), delete blobs after 2 days of creation
+    //Result Pattern
+    //Connection String Env variable (App service)
+    //Azure Functions, create thumbnails(Blob trigger), delete blobs after 1 days of creation
 
     [Route("api/[controller]")]
     [ApiController]
@@ -27,13 +28,13 @@ namespace Project1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<string>>> Get()
         {
-            //     var blobServiceClient = _fileStorageService.GetBlobServiceClient();
-            //     var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
+            var blobServiceClient = _fileStorageService.GetBlobServiceClient();
+            var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
 
-            //     var listres = await _fileStorageService.ListBlobs(containerClient);
+            var listres = await _fileStorageService.ListBlobs(containerClient);
 
-            //     return Ok(listres);
-            return Ok("Demo");
+            return Ok(listres);
+
         }
 
         [HttpGet]
@@ -64,12 +65,18 @@ namespace Project1.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UploadFileDTO uploadFileDTO)
         {
+
             var blobServiceClient = _fileStorageService.GetBlobServiceClient();
             var containerClient = _fileStorageService.GetContainerClient(blobServiceClient, containerName);
 
-            await _fileStorageService.UploadFileAsync(uploadFileDTO.File, containerClient);
+            var res = await _fileStorageService.UploadFileAsync(uploadFileDTO.File, containerClient);
 
-            return Ok();
+            if (!res.IsSuccess)
+            {
+                return BadRequest(res.ErrorMessage);
+            }
+
+            return Ok(res.Value);
         }
     }
 }

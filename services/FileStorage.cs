@@ -1,6 +1,8 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Project1.DTOs;
+using Project1.Enums;
+using Project1.ErrorHandling;
 
 namespace Project1.services
 {
@@ -8,11 +10,9 @@ namespace Project1.services
     {
         public BlobServiceClient GetBlobServiceClient()
         {
-            //     Uri accountUri = new("https://iztestblob.blob.core.windows.net");
-            //     var defAzCreds = new DefaultAzureCredential();
-            //     BlobServiceClient blobServiceClient = new(accountUri, defAzCreds);
+            string blobConnectionString = Environment.GetEnvironmentVariable("BLOBCONN");
 
-            BlobServiceClient blobServiceClient = new("");
+            BlobServiceClient blobServiceClient = new(blobConnectionString);
 
             return blobServiceClient;
         }
@@ -23,10 +23,21 @@ namespace Project1.services
             return containerClient;
         }
 
-        public async Task<bool> UploadFileAsync(IFormFile file, BlobContainerClient containerClient)
+        public async Task<Result<GetBlobDTO>> UploadFileAsync(IFormFile file, BlobContainerClient blobContainerClient)
         {
+            long fileSizeBytes = file.Length;
             string fileName = file.FileName;
-            BlobClient blobClient = containerClient.GetBlobClient(fileName);
+            string fileExtension = Path.GetExtension(fileName).Substring(1);
+            if (!Enum.IsDefined(typeof(SupportedFiles), fileExtension))
+            {
+                return Result<GetBlobDTO>.Failure("Send an valid image file");
+            }
+            if (fileSizeBytes > 5_000_000)
+            {
+                return Result<GetBlobDTO>.Failure("The image size must be lower than 5MB");
+            }
+
+            BlobClient blobClient = blobContainerClient.GetBlobClient(fileName);
 
             var stream = file.OpenReadStream();
 
@@ -34,10 +45,11 @@ namespace Project1.services
 
             if (!await blobClient.ExistsAsync())
             {
-                Console.WriteLine("Error uploading the blob");
+                return Result<GetBlobDTO>.Failure("The blob didn't upload correctly");
             }
-            Console.WriteLine("Blob Uploaded");
-            return true;
+
+            var getBlobDTO = new GetBlobDTO { BlobName = blobClient.Name };
+            return Result<GetBlobDTO>.Success(getBlobDTO);
 
         }
 
@@ -60,7 +72,6 @@ namespace Project1.services
             BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
             try
             {
-
                 using var stream = await blobClient.OpenReadAsync();
 
                 FileStream blobStream = File.OpenWrite($"images/{blobClient.Name}");
