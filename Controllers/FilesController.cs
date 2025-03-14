@@ -1,18 +1,9 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Project1.DTOs;
-using Project1.Enums;
-using Project1.services;
+using Project1.Services;
 
 namespace Project1.Controllers
 {
-    //Validations, upload only images/types (png,jpg,webp,etc), Size Validation
-    //Result Pattern
-    //Connection String Env variable (App service)
-    //Azure Functions, create thumbnails(Blob trigger), delete blobs after 1 days of creation
-
     [Route("api/[controller]")]
     [ApiController]
     public class FilesController : ControllerBase

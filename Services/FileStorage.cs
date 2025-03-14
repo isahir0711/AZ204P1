@@ -1,10 +1,9 @@
-using Azure.Identity;
 using Azure.Storage.Blobs;
 using Project1.DTOs;
 using Project1.Enums;
 using Project1.ErrorHandling;
 
-namespace Project1.services
+namespace Project1.Services
 {
     public class FileStorage
     {
@@ -99,7 +98,6 @@ namespace Project1.services
                 throw;
             }
         }
-
 
     }
 }
