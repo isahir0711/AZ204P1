@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project1.DTOs;
 using Project1.Services;
@@ -6,6 +7,7 @@ namespace Project1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FilesController : ControllerBase
     {
         private readonly FileStorage _fileStorageService;
