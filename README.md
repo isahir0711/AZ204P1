@@ -3,8 +3,6 @@
 > ## Todo
 >
 > - Create the Azure function
-> - Add Auth
-> - Download the stream of the image and send to the user instead of downloading into the >server directory
 
 ## Purpose
 
@@ -13,6 +11,7 @@ This project will help me to understand better the different topics of the Azure
 - Azure App Service
 - Azure Blob Storage
 - Azure Functions
+- Azure App Registration
 
 ## How the project integrates each service/topic
 
@@ -24,5 +23,4 @@ This project will help me to understand better the different topics of the Azure
 
 ### Another services to integrate
 
-1. Azure Identity
 2. Application Insights
