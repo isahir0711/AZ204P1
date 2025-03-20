@@ -20,6 +20,8 @@ builder.Services.AddAuthorization(config =>
 
 builder.Services.AddScoped<FileStorage>();
 
+builder.Services.AddScoped<AuthService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
