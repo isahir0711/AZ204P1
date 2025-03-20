@@ -32,7 +32,7 @@ namespace Project1.Controllers
         public async Task<ActionResult> Get(string blobName)
         {
             BlobServiceClient blobServiceClient = _fileStorageService.GetBlobServiceClient();
-            var res = await _fileStorageService.GetBlobURI(blobServiceClient);
+            var res = await _fileStorageService.GetBlobURI(blobServiceClient, blobName);
             if (!res.IsSuccess)
             {
                 return BadRequest(res.ErrorMessage);

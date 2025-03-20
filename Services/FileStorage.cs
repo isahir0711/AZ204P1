@@ -32,11 +32,11 @@ namespace Project1.Services
             return blobServiceClient;
         }
 
-        public async Task<Result<Uri>> GetBlobURI(BlobServiceClient blobServiceClient)
+        public async Task<Result<Uri>> GetBlobURI(BlobServiceClient blobServiceClient, string blobName)
         {
             BlobClient blobClient = blobServiceClient
-                .GetBlobContainerClient("demoimages")
-                .GetBlobClient("obscura_5_desktop.jpg");
+                .GetBlobContainerClient(containerName)
+                .GetBlobClient(blobName);
 
             //Todo validate if the blob exists
 
@@ -84,7 +84,7 @@ namespace Project1.Services
 
         public async Task<Result<GetBlobDTO>> UploadFileAsync(IFormFile file, BlobServiceClient blobServiceClient)
         {
-            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("demoimages");
+            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
             long fileSizeBytes = file.Length;
             string fileName = file.FileName;
             string fileExtension = Path.GetExtension(fileName).Substring(1);
@@ -121,7 +121,7 @@ namespace Project1.Services
 
         public async Task<List<string>> ListBlobs(BlobServiceClient blobServiceClient)
         {
-            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("demoimages");
+            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
             List<string> blobList = [];
 
@@ -137,7 +137,7 @@ namespace Project1.Services
 
         public async Task DeleteBlob(string blobName, BlobServiceClient blobServiceClient)
         {
-            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("demoimages");
+            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
             BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
 
             try
