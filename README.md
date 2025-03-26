@@ -2,7 +2,11 @@
 
 > ## Todo
 >
-> - Create the Azure function
+> - Create a container image of this project
+> - Implement Azure Key vault to store the client secret from the App registration
+> - appsettings for prod (Azure App registration)
+> - AutoScaling
+> - Deployment Slots
 
 ## Purpose
 
@@ -23,4 +27,5 @@ This project will help me to understand better the different topics of the Azure
 
 ### Another services to integrate
 
+1. Azure Key Vault
 2. Application Insights
